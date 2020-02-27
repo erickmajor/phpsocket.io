@@ -1,0 +1,28 @@
+{
+    "name": "erickmajor/phpsocket.io",
+    "description": "PHPSocket.IO is a library written in PHP/JavaScript that allows real-time communication between a client and server via web sockets.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Anthony Ogundipe",
+            "email": "anthony@africoders.com",
+            "homepage": "http://dhtml.github.io/phpsocket.io/",
+            "role": "Owner"
+        },
+        {
+            "name": "Erick Major dos Santos",
+            "email": "erick.major@yahoo.com.br",
+            "homepage": "http://erickmajor.github.io",
+            "role": "Developer"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.6.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5",
+        "behat/behat": "^3.6@dev"
+    }
+}
