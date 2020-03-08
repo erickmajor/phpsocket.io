@@ -17,59 +17,45 @@ class PHPWebSockets extends WebSocketServer
 {
     /**
      *  commands
-     *  
      *  An object holding all available commands
-     *
      *  @access public
-     *
      *  @var  object
      */
     public $commands;
 
     /**
      *  numUsers
-     *  
      *  An integer holding number of users
-     *
      *  @access public
-     *
      *  @var  int
      */
     public $numUsers = 0;
 
     /**
      *  socketID
-     *  
      *  An array holding all available socket IDs
-     *
      *  @access public
-     *
      *  @var  array
      */
     public $socketID = [];
 
     /**
      *  usernames
-     *  
      *  An object holding all available users
-     *
      *  @access public
-     *
      *  @var  object
      */
     public $usernames = [];
 
     /**
      *  cmdwrap
-     *
      * This is used internally to package the entire information of command, data and sender into a json object
-     *
      * @param string $cmd The command to be broadcasted e.g. chat
      * @param string $data (Optional) The data to be broadcasted along with the command e.g. hello world
      * @param string $sender (Optional) the id of the user that is sending the message
      * @return false|string
      */
-    private function cmdwrap($cmd,$data,$sender=null)
+    private function cmdwrap($cmd, $data, $sender=null)
     {
         $response = [
             'cmd'    => $cmd,
@@ -81,12 +67,9 @@ class PHPWebSockets extends WebSocketServer
 
     /**
     *  process
-    *  
     *  This is called immediately when the data is recieved. and is used internally to send messages to clients.
-    *
     *  @param  object  $user     The user object of the client sending the message
     *  @param  object  $message  The message object to be sent
-    *
     *  @access protected
     */
     protected function process ($user, $message)
@@ -104,18 +87,15 @@ class PHPWebSockets extends WebSocketServer
             }
         } else {
             //non-broadcast message
-            $this->trigger($message->cmd,$message->data,$message->sender);
+            $this->trigger($message->cmd, $message->data, $message->sender);
         }
     }
 
     /**
      *  connected
-     *
      *  This is executed when socket connection is established for a particular user
      *  A welcome message is also send back to the client
-     *
      *  @param  object  $user     The user object of the client sending the message
-     *
      *  @access protected
      *
      */
@@ -129,11 +109,9 @@ class PHPWebSockets extends WebSocketServer
      *  disconnect
      *
      *   This is executed when a client is disconnected. It is a cleanup function.
-     *
      *   @param  object   $socket    			The socket object of the connected client
      *   @param  boolean  $triggerClosed   		Flag to determine if close was triggered by client
      *   @param  boolean  $sockErrNo   			(optional) Socket error number
-     *
      *   @access protected
      */
     protected function disconnect($socket, $triggerClosed = true, $sockErrNo = null)
@@ -144,13 +122,10 @@ class PHPWebSockets extends WebSocketServer
      
     /**
      *  closed
-     *
      *   This is where cleanup would go, in case the user had any sort of
      *   open files or other objects associated with them.  This runs after the socket
      *   has been closed, so there is no need to clean up the socket itself here.
-     *
      *   @param  object  $user    The user object of the connected client
-     *
      *   @access protected
      */
     protected function closed($user)
@@ -160,20 +135,17 @@ class PHPWebSockets extends WebSocketServer
 
     /**
      *  on
-     *
      *  This is used to package a request to the socket server
-     *
      *  @param  string  $cmd     The command to be broadcasted e.g. chat
      *  @param  object  $cb      The function callback attached to the command
      */
-    public function on($cmd,$cb)
+    public function on($cmd, $cb)
     {
-        $this->commands["$cmd"]=$cb;
+        $this->commands["$cmd"] = $cb;
     }
 
     /**
      * getUserById
-     *
      * Fetches a user object via its id
      */
     public function getUserById($userid)
@@ -189,15 +161,13 @@ class PHPWebSockets extends WebSocketServer
 
     /**
      * getUserByName
-     *
      * Fetches a user object by the Name
-     *
      */
     public function getUserByName($username)
     {
         foreach ($this->socketID as $uid => $uname) {
             if ($uname == $username) {
-                $user=$this->getUserById($uid);
+                $user = $this->getUserById($uid);
                 return $user;
             }
         }
@@ -207,63 +177,55 @@ class PHPWebSockets extends WebSocketServer
 
     /**
      *  trigger
-     *
      * This will trigger a command that has already been using using the on function
-     *
-     *  @param  string  $cmd     The command to be broadcasted e.g. chat
-     *  @param  string  $data    (Optional) The data to be broadcasted along with the command e.g. hello world
+     *  @param  string  $cmd      The command to be broadcasted e.g. chat
+     *  @param  string  $params   (Optional) The data to be broadcasted along with the command e.g. hello world
      *  @param  string  $sender   (Optional) the id of the user that is sending the message
      */
-    public function trigger($cmd,$params='',$sender=null)
+    public function trigger($cmd, $params = '', $sender = null)
     {
         if (!isset($this->commands["$cmd"])) {
             return;
         }
 
-        $this->commands["$cmd"]($this,$params,$sender);
+        $this->commands["$cmd"]($this, $params, $sender);
     }
 
     /**
      *  emit
-     *
      * send message to current user only
-     *
      *  @param  string  $cmd     The command to be broadcasted e.g. chat
      *  @param  string  $data    (Optional) The data to be broadcasted along with the command e.g. hello world
      */
-    public function emit($cmd,$data)
+    public function emit($cmd, $data)
     {
-        $this->send($this->user, $this->cmdwrap($cmd,$data));
+        $this->send($this->user, $this->cmdwrap($cmd, $data));
     }
 
     /**
      *   push
-     *
      *   send message to specified user only
-     *
      *   @param  object  $user    The user object of the recipient (or the user id)
      *   @param  string  $cmd     The command to be broadcasted e.g. chat
      *   @param  string  $data    (Optional) The data to be broadcasted along with the command e.g. hello world
      */
-    public function push($user,$cmd,$data)
+    public function push($user, $cmd, $data)
     {
-        $this->send($user, $this->cmdwrap($cmd,$data));
+        $this->send($user, $this->cmdwrap($cmd, $data));
     }
 
     /**
      *  broadcast
-     *
      * This is used to send a message to all connected users
-     *
      *  @param  string  $cmd     The command to be broadcasted e.g. chat
      *  @param  string  $data    (Optional) The data to be broadcasted along with the command e.g. hello world
      *  @param  boolean  $self   (Optional) true means the message should also be broadcasted to the sender
      */
-    public function broadcast($cmd,$data='',$self=false)
+    public function broadcast($cmd, $data='', $self=false)
     {
-        $data = $this->cmdwrap($cmd,$data);
+        $data = $this->cmdwrap($cmd, $data);
         foreach($this->users as $user) {
-            if(!$self && $user==$this->user) {
+            if(!$self && $user == $this->user) {
                 continue;
             }
 
@@ -273,7 +235,6 @@ class PHPWebSockets extends WebSocketServer
 
     /**
      * get_all_users
-     *
      * Returns an array of all available user IDs
      */
     public function get_all_users()
@@ -288,7 +249,6 @@ class PHPWebSockets extends WebSocketServer
 
     /**
      * listen
-     *
      * This will initiate the websocket server and start waiting for client connections
      */
     public function listen()
