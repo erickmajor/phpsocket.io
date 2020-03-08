@@ -1,8 +1,14 @@
 <?php
-/*
-* Websockets User Object
-* From https://github.com/ghedipunk/PHP-Websockets
-*/
+
+namespace SocketIO;
+
+/**
+ * Class WebSocketUser
+ * Websockets User Object
+ *
+ * @package SocketIO
+ * @link https://github.com/ghedipunk/PHP-Websockets PHP WebSockets
+ */
 class WebSocketUser
 {
     public $socket;
@@ -19,7 +25,7 @@ class WebSocketUser
 
     public $hasSentClose = false;
 
-    function __construct($id, $socket)
+    public function __construct($id, $socket)
     {
         $this->id = $id;
         $this->socket = $socket;
