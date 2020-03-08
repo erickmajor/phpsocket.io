@@ -2,6 +2,8 @@
 
 namespace SocketIO;
 
+use Exception;
+
 /**
  * Class PHPWebSockets
  *
@@ -55,7 +57,7 @@ class PHPWebSockets extends WebSocketServer
      * @param string $sender (Optional) the id of the user that is sending the message
      * @return false|string
      */
-    private function cmdwrap($cmd, $data, $sender=null)
+    private function cmdwrap($cmd, $data, $sender = null)
     {
         $response = [
             'cmd'    => $cmd,
@@ -147,6 +149,8 @@ class PHPWebSockets extends WebSocketServer
     /**
      * getUserById
      * Fetches a user object via its id
+     * @param $userid
+     * @return |null
      */
     public function getUserById($userid)
     {
@@ -162,6 +166,8 @@ class PHPWebSockets extends WebSocketServer
     /**
      * getUserByName
      * Fetches a user object by the Name
+     * @param $username
+     * @return |null
      */
     public function getUserByName($username)
     {
@@ -221,7 +227,7 @@ class PHPWebSockets extends WebSocketServer
      *  @param  string  $data    (Optional) The data to be broadcasted along with the command e.g. hello world
      *  @param  boolean  $self   (Optional) true means the message should also be broadcasted to the sender
      */
-    public function broadcast($cmd, $data='', $self=false)
+    public function broadcast($cmd, $data = '', $self = false)
     {
         $data = $this->cmdwrap($cmd, $data);
         foreach($this->users as $user) {
