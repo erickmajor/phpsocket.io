@@ -24,5 +24,8 @@
     "require-dev": {
         "phpunit/phpunit": "^5",
         "behat/behat": "^3.6@dev"
+    },
+    "suggest": {
+        "touskar/php-socket-io-event-emitter": "Allows support to SocketIO emitter in PHP code"
     }
 }
