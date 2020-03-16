@@ -17,6 +17,14 @@
             "role": "Developer"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "SocketIO\\": "src/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.6.0"
